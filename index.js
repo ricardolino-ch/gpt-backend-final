@@ -17,15 +17,21 @@ const openai = new OpenAI({
 app.post("/gpt", async (req, res) => {
   const { text, action } = req.body;
 
-  const systemPrompt = `
-Du bist ein Co-Pilot im Kundenservice. Der Agent schreibt einen ersten Antwortentwurf an den Kunden.
-Deine Aufgabe ist es, den Text sprachlich zu verbessern, klarer zu strukturieren und professionell zu formulieren – aber die ursprüngliche Aussage zu respektieren.
-Die Anrede ist bereits korrekt („Grüezi Vorname Nachname“) und soll nicht verändert werden.
-Füge unter der Anrede einen Absatz ein, danach: „Vielen Dank für Ihre Nachricht.“
-Dann erneut ein Absatz – und danach folgt der verbesserte Inhalt.
-Der Text muss empathisch, hilfsbereit und kundenorientiert klingen – im Stil eines Schweizer Kundendienstmitarbeiters.
-`;
+const systemPrompt = `
+Du bist ein Co-Pilot im Kundenservice. Verbessere den folgenden Antwortvorschlag sprachlich, strukturiere ihn klar und halte einen professionellen Ton.
+Beginne mit der Anrede:
 
+${anrede}
+
+Dann ein Absatz:
+Vielen Dank für Ihre Nachricht.
+
+Danach der überarbeitete Text.
+
+Beende mit einem Absatz und folgender Zeile:
+
+${schluss}
+`;
   const messages = [
     { role: "system", content: systemPrompt },
     { role: "user", content: text }
