@@ -15,9 +15,17 @@ const openai = new OpenAI({
 });
 
 app.post("/gpt", async (req, res) => {
-  const { text, action } = req.body;
+  const { text, action, anrede, schluss } = req.body;
 
-const systemPrompt = `
+  let systemPrompt = "";
+
+  if (action === "translate") {
+    systemPrompt = `
+Du bist ein professioneller Kundenservice-Übersetzer.
+Übersetze den folgenden deutschen Text ins Französische – höflich, freundlich und professionell im Ton eines Schweizer Kundendienstmitarbeiters.
+    `;
+  } else {
+    systemPrompt = `
 Du bist ein Co-Pilot im Kundenservice. Verbessere den folgenden Antwortvorschlag sprachlich, strukturiere ihn klar und halte einen professionellen Ton.
 Beginne mit der Anrede:
 
@@ -26,12 +34,14 @@ ${anrede}
 Dann ein Absatz:
 Vielen Dank für Ihre Nachricht.
 
-Danach der überarbeitete Text.
+Danach folgt der überarbeitete Text.
 
 Beende mit einem Absatz und folgender Zeile:
 
 ${schluss}
-`;
+    `;
+  }
+
   const messages = [
     { role: "system", content: systemPrompt },
     { role: "user", content: text }
