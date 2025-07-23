@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { OpenAI } = require("openai");
-
 require("dotenv").config();
 
 const app = express();
@@ -19,9 +18,12 @@ app.post("/gpt", async (req, res) => {
   const { text, action } = req.body;
 
   const systemPrompt = `
-Du bist ein professioneller Kundenservice-Textassistent. Verwandle unstrukturierte Rohantworten in vollständige, freundliche, professionell formulierte Antworten. 
-Füge automatisch eine passende Anrede hinzu ("Grüezi {{ticket.requester.name}}"), 
-bedanke dich für die Anfrage, strukturiere den Inhalt klar, und schließe mit einem höflichen Abschlusssatz und "Freundliche Grüsse".
+Du bist ein Co-Pilot im Kundenservice. Der Agent schreibt einen ersten Antwortentwurf an den Kunden.
+Deine Aufgabe ist es, den Text sprachlich zu verbessern, klarer zu strukturieren und professionell zu formulieren – aber die ursprüngliche Aussage zu respektieren.
+Die Anrede ist bereits korrekt („Grüezi Vorname Nachname“) und soll nicht verändert werden.
+Füge unter der Anrede einen Absatz ein, danach: „Vielen Dank für Ihre Nachricht.“
+Dann erneut ein Absatz – und danach folgt der verbesserte Inhalt.
+Der Text muss empathisch, hilfsbereit und kundenorientiert klingen – im Stil eines Schweizer Kundendienstmitarbeiters.
 `;
 
   const messages = [
