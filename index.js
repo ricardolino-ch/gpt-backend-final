@@ -19,30 +19,36 @@ app.post("/gpt", async (req, res) => {
   if (action === "translate") {
     systemPrompt = `
 Du bist ein professioneller Kundenservice-Übersetzer.
-Übersetze den folgenden deutschen Text ins Französische – höflich, freundlich und kontextsensitiv.
+Übersetze den folgenden Text vom Deutschen ins Französische. 
+Achte auf Höflichkeit, direkte Anrede mit "Sie" und eine saubere, klare Satzstruktur.
     `.trim();
   } else if (action === "translate-it") {
     systemPrompt = `
-Du bist ein professioneller Kundenservice-Übersetzer.
-Übersetze den folgenden deutschen Text ins Italienische – höflich, freundlich und klar.
+Sei un traduttore professionale del servizio clienti.
+Traduci il testo seguente dal tedesco all'italiano in modo educato, chiaro e senza frasi fatte.
     `.trim();
   } else {
     systemPrompt = `
-Du bist ein exzellenter Co-Pilot für den Kundenservice.  
-Verbessere, strukturiere und formuliere den folgenden Antwortvorschlag professionell um.
+Du bist ein KI-gestützter Kundenservice-Co-Pilot von Ricardo.ch.
 
-Beachte:
-- Sprich das Mitglied immer direkt an.
-- Die Anrede soll sein: Grüezi {{ticket.requester.name}}
-- Danach 1 Zeile Abstand
-- Dann: Vielen Dank für Ihre Nachricht.
-- Danach wieder 1 Zeile Abstand
-- Dann kommt der eigentliche Text
-- Der Abschluss lautet: Freundliche Grüsse
+Deine Aufgabe:
+- Formuliere Texte so, dass sie direkt an das Mitglied gerichtet sind.
+- Verwende die Sie-Anrede.
+- Beginne mit:
+  Grüezi {{ticket.requester.name}}
 
-Der Ton soll höflich, klar und empathisch sein – wie ein guter Kundenservice-Mitarbeiter.
-Wenn der Text unklar ist, formuliere ihn so, dass der Leser ihn einfach versteht.
-Erkenne implizite Absichten und wandle z. B. „Er soll sich beim Verkäufer melden“ in „Bitte melden Sie sich beim Verkäufer“ um.
+  Vielen Dank für Ihre Nachricht.
+
+- Gliedere den Hauptteil übersichtlich.
+- Schließe mit:
+  Bei weiteren Fragen sind wir gerne für Sie da.
+
+  Freundliche Grüsse
+
+Erkenne, wenn indirekte Sprache verwendet wird (z. B. „er soll sich beim Verkäufer melden“) und formuliere aktiv:
+→ „Bitte melden Sie sich beim Verkäufer …“
+
+Vermeide Floskeln, Smalltalk und irrelevante Höflichkeiten. Ziel ist eine klare, empathische und professionelle Support-Antwort.
     `.trim();
   }
 
@@ -51,18 +57,18 @@ Erkenne implizite Absichten und wandle z. B. „Er soll sich beim Verkäufer m
       model: "gpt-4",
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "user", content: text },
+        { role: "user", content: text }
       ],
     });
 
     const reply = completion.choices[0].message.content;
-    res.json({ reply });
+    res.json({ text: reply }); // Wichtig: muss text heißen für app.js
   } catch (error) {
     console.error("OpenAI error:", error);
-    res.status(500).json({ error: "Something went wrong." });
+    res.status(500).json({ error: "GPT-Anfrage fehlgeschlagen." });
   }
 });
 
 app.listen(port, () => {
-  console.log(`GPT-Backend läuft auf Port ${port}`);
+  console.log(`✅ GPT-Backend läuft auf Port ${port}`);
 });
