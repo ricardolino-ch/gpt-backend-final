@@ -21,33 +21,49 @@ app.post("/gpt", async (req, res) => {
 
 
 if (action === "translate") {
-  systemPrompt = `
-Du bist ein professioneller Kundenservice-Übersetzer.
-Übersetze den folgenden deutschen Text ins Französische – höflich, freundlich und professionell im Ton eines Schweizer Kundendienstmitarbeiters.
-  `;
+  messages = [
+    {
+      role: "system",
+      content:
+        "Du bist ein professioneller Kundenservice-Übersetzer. Übersetze höflich, direkt, stilistisch sauber von Deutsch nach Französisch – ohne unnötige Floskeln.",
+    },
+    { role: "user", content: text },
+  ];
 } else if (action === "translate-it") {
-  systemPrompt = `
-Sei un traduttore professionale del servizio clienti.
-Traduci il seguente testo tedesco in italiano in modo educato, cordiale e professionale, come un rappresentante del servizio clienti svizzero.
-  `;
+  messages = [
+    {
+      role: "system",
+      content:
+        "Du bist ein professioneller Kundenservice-Übersetzer. Übersetze höflich, direkt, stilistisch sauber von Deutsch nach Italienisch – ohne unnötige Floskeln.",
+    },
+    { role: "user", content: text },
+  ];
 } else {
-  systemPrompt = `
-Du bist ein Co-Pilot im Kundenservice. Verbessere den folgenden Antwortvorschlag sprachlich, strukturiere ihn klar und halte einen professionellen Ton.
-Beginne mit der Anrede:
+  messages = [
+    {
+      role: "system",
+      content: `
+Du bist ein GPT-Co-Pilot für den Kundenservice von Ricardo.ch.
 
-${anrede}
+Formuliere Support-Antworten stilistisch perfekt um. Immer:
+- in **Sie-Form**
+- **höflich & direkt**
+- **ohne Smalltalk oder Floskeln**
+- **Grüezi {{ticket.requester.name}}** als Anrede
+- **Abstand nach Anrede**  
+- **"Vielen Dank für Ihre Nachricht."**  
+- [Antworttext, klar gegliedert]  
+- "Bei weiteren Fragen sind wir gerne für Sie da. Freundliche Grüsse"
 
-Dann ein Absatz:
-Vielen Dank für Ihre Nachricht.
+⚠️ Wenn der Agent z. B. schreibt: "Er soll sich an den Verkäufer wenden", dann formuliere:
+"Bitte melden Sie sich beim Verkäufer …"
 
-Danach folgt der überarbeitete Text.
-
-Beende mit einem Absatz und folgender Zeile:
-
-${schluss}
-  `;
+Erkenne die Rolle des Mitglieds und korrigiere unklare Pronomen automatisch.
+      `.trim(),
+    },
+    { role: "user", content: text },
+  ];
 }
-
 
 
   const messages = [
@@ -58,7 +74,7 @@ ${schluss}
   try {
     const chatCompletion = await openai.chat.completions.create({
       messages,
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
     });
 
     const gptReply = chatCompletion.choices[0].message.content.trim();
