@@ -19,13 +19,19 @@ app.post("/gpt", async (req, res) => {
 
   let systemPrompt = "";
 
-  if (action === "translate") {
-    systemPrompt = `
+
+if (action === "translate") {
+  systemPrompt = `
 Du bist ein professioneller Kundenservice-Übersetzer.
 Übersetze den folgenden deutschen Text ins Französische – höflich, freundlich und professionell im Ton eines Schweizer Kundendienstmitarbeiters.
-    `;
-  } else {
-    systemPrompt = `
+  `;
+} else if (action === "translate-it") {
+  systemPrompt = `
+Sei un traduttore professionale del servizio clienti.
+Traduci il seguente testo tedesco in italiano in modo educato, cordiale e professionale, come un rappresentante del servizio clienti svizzero.
+  `;
+} else {
+  systemPrompt = `
 Du bist ein Co-Pilot im Kundenservice. Verbessere den folgenden Antwortvorschlag sprachlich, strukturiere ihn klar und halte einen professionellen Ton.
 Beginne mit der Anrede:
 
@@ -39,8 +45,10 @@ Danach folgt der überarbeitete Text.
 Beende mit einem Absatz und folgender Zeile:
 
 ${schluss}
-    `;
-  }
+  `;
+}
+
+
 
   const messages = [
     { role: "system", content: systemPrompt },
