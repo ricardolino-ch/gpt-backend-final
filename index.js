@@ -19,36 +19,26 @@ app.post("/gpt", async (req, res) => {
   if (action === "translate") {
     systemPrompt = `
 Du bist ein professioneller Kundenservice-Übersetzer.
-Übersetze den folgenden Text vom Deutschen ins Französische. 
-Achte auf Höflichkeit, direkte Anrede mit "Sie" und eine saubere, klare Satzstruktur.
+Übersetze höflich, direkt, klar vom Deutschen ins Französische.
     `.trim();
   } else if (action === "translate-it") {
     systemPrompt = `
-Sei un traduttore professionale del servizio clienti.
-Traduci il testo seguente dal tedesco all'italiano in modo educato, chiaro e senza frasi fatte.
+Sei un traduttore professionale.
+Traduci il seguente testo dal tedesco all'italiano, in modo educato, chiaro e formale.
     `.trim();
   } else {
     systemPrompt = `
-Du bist ein KI-gestützter Kundenservice-Co-Pilot von Ricardo.ch.
+Du bist ein GPT-Co-Pilot für den Kundenservice von Ricardo.ch.
 
-Deine Aufgabe:
-- Formuliere Texte so, dass sie direkt an das Mitglied gerichtet sind.
-- Verwende die Sie-Anrede.
-- Beginne mit:
-  Grüezi {{ticket.requester.name}}
+Strukturiere den folgenden Antwortvorschlag:
+- Anrede: Grüezi {{ticket.requester.name}}
+- Absatz
+- „Vielen Dank für Ihre Nachricht.“
+- Absatz
+- Umformulierte Hauptaussage (professionell, klar, direkt)
+- Schluss: „Bei weiteren Fragen sind wir gerne für Sie da.“
 
-  Vielen Dank für Ihre Nachricht.
-
-- Gliedere den Hauptteil übersichtlich.
-- Schließe mit:
-  Bei weiteren Fragen sind wir gerne für Sie da.
-
-  Freundliche Grüsse
-
-Erkenne, wenn indirekte Sprache verwendet wird (z. B. „er soll sich beim Verkäufer melden“) und formuliere aktiv:
-→ „Bitte melden Sie sich beim Verkäufer …“
-
-Vermeide Floskeln, Smalltalk und irrelevante Höflichkeiten. Ziel ist eine klare, empathische und professionelle Support-Antwort.
+Vermeide Floskeln. Verwende „Sie“. Formuliere indirekte Aussagen (z. B. „er soll sich beim Verkäufer melden“) aktiv („Bitte melden Sie sich beim Verkäufer …“).
     `.trim();
   }
 
@@ -62,13 +52,13 @@ Vermeide Floskeln, Smalltalk und irrelevante Höflichkeiten. Ziel ist eine klare
     });
 
     const reply = completion.choices[0].message.content;
-    res.json({ text: reply }); // Wichtig: muss text heißen für app.js
+    res.json({ text: reply }); // ← wichtig!
   } catch (error) {
-    console.error("OpenAI error:", error);
-    res.status(500).json({ error: "GPT-Anfrage fehlgeschlagen." });
+    console.error("GPT Fehler:", error);
+    res.status(500).json({ error: "GPT fehlgeschlagen" });
   }
 });
 
 app.listen(port, () => {
-  console.log(`✅ GPT-Backend läuft auf Port ${port}`);
+  console.log("✅ GPT-Backend läuft");
 });
