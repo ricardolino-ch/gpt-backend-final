@@ -22,7 +22,11 @@ if (action === "translate-fr" || action === "translate") {
   systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Italienisch.";
 } else {
   systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.
-Verbessere den Text strukturiert damit dieser einem Mitglied von Ricardo versendet werden kann. Sei ausführlich, korrekt, denke mit. Beginne mit:
+Verbessere den Text strukturiert damit dieser einem Mitglied von Ricardo versendet werden kann. Sei ausführlich, korrekt, denke mit. 
+
+Du kannst als Unterstützung den Inhalt von der Online-Hilfe von Ricardo unter https://help.ricardo.ch verwenden. 
+
+Beginne mit:
 
 Grüezi {{ticket.requester.name}}
 
