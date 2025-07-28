@@ -46,8 +46,8 @@ Freundliche Grüsse`;
       ],
     });
 
-    const output = chatCompletion.choices[0].message.content;
-    res.json({ result: output });
+const output = chatCompletion.choices[0].message.content;
+res.json({ text: output });
   } catch (error) {
     res.status(500).json({ error: "Fehler bei GPT", details: error.message });
   }
