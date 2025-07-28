@@ -16,13 +16,13 @@ app.post("/gpt", async (req, res) => {
 
   let systemPrompt = "";
 
-  if (action === "translate-fr") {
-    systemPrompt = "Übersetze folgenden Text höflich und professionell auf Französisch:";
-  } else if (action === "translate-it") {
-    systemPrompt = "Traduci il seguente testo in italiano, in modo gentile e professionale:";
-  } else {
-    systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.
-Antworte strukturiert. Beginne mit:
+if (action === "translate-fr" || action === "translate") {
+  systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Französisch.";
+} else if (action === "translate-it") {
+  systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Italienisch.";
+} else {
+  systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.
+Verbessere den Text strukturiert damit dieser einem Mitglied von Ricardo versendet werden kann. Sei ausführlich, korrekt, denke mit. Beginne mit:
 
 Grüezi {{ticket.requester.name}}
 
@@ -35,7 +35,7 @@ Abschliessend:
 Bei weiteren Fragen stehen wir Ihnen gerne zur Verfügung.
 
 Freundliche Grüsse`;
-  }
+}
 
   try {
     const chatCompletion = await openai.chat.completions.create({
