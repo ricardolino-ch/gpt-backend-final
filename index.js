@@ -19,6 +19,14 @@ app.post("/gpt", async (req, res) => {
 if (action === "translate-fr" || action === "translate") {
   systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Französisch.";
 } else if (action === "translate-it") {
+} else if (action === "translate-en") {
+  systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Englisch.";
+} else if (action === "fr-de") {
+  systemPrompt = "Übersetze den folgenden französischen Text höflich und professionell ins Deutsche.";
+} else if (action === "it-de") {
+  systemPrompt = "Übersetze den folgenden italienischen Text höflich und professionell ins Deutsche.";
+} else if (action === "en-de") {
+  systemPrompt = "Übersetze den folgenden englischen Text höflich und professionell ins Deutsche.";
   systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Italienisch.";
 } else {
   systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.

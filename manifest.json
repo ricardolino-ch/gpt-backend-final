@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "GPT Assistant by Ricardo",
+  "author": "Larissa Hegglin",
+  "defaultLocale": "de",
+  "version": "1.0",
+  "location": {
+    "support": {
+      "ticket_sidebar": {
+        "url": "assets/launcher.html",
+        "icon": "assets/icon.png"
+      }
+    }
+  },
+  "requirements": {
+    "zaf": {
+      "version": "2.0"
+    }
+  }
+}
