@@ -26,6 +26,8 @@ app.post("/gpt", async (req, res) => {
     systemPrompt = "Übersetze den folgenden französischen Text höflich und professionell ins Deutsche.";
   } else if (action === "it-de") {
     systemPrompt = "Übersetze den folgenden italienischen Text höflich und professionell ins Deutsche.";
+  } else if (action === "summarize") {
+    systemPrompt = "Fasse den folgenden Kommentar eines Mitglieds in Bulletpoints zusammen. Erfasse alle Wünsche und Aussagen kurz und prägnant. Ignoriere Grussformeln.";
   } else if (action === "en-de") {
     systemPrompt = "Übersetze den folgenden englischen Text höflich und professionell ins Deutsche.";
   } else {
