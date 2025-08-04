@@ -16,25 +16,25 @@ app.post("/gpt", async (req, res) => {
 
   let systemPrompt = "";
 
-if (action === "translate-fr" || action === "translate") {
-  systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Französisch.";
-} else if (action === "translate-it") {
-} else if (action === "translate-en") {
-  systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Englisch.";
-} else if (action === "fr-de") {
-  systemPrompt = "Übersetze den folgenden französischen Text höflich und professionell ins Deutsche.";
-} else if (action === "it-de") {
-  systemPrompt = "Übersetze den folgenden italienischen Text höflich und professionell ins Deutsche.";
-} else if (action === "en-de") {
-  systemPrompt = "Übersetze den folgenden englischen Text höflich und professionell ins Deutsche.";
-  systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Italienisch.";
-} else {
-  systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.
-Verbessere den Text strukturiert damit dieser einem Mitglied von Ricardo versendet werden kann. Sei ausführlich, korrekt, denke mit. 
+  if (action === "translate-fr" || action === "translate") {
+    systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Französisch.";
+  } else if (action === "translate-it") {
+    systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Italienisch.";
+  } else if (action === "translate-en") {
+    systemPrompt = "Übersetze den folgenden Text höflich und professionell auf Englisch.";
+  } else if (action === "fr-de") {
+    systemPrompt = "Übersetze den folgenden französischen Text höflich und professionell ins Deutsche.";
+  } else if (action === "it-de") {
+    systemPrompt = "Übersetze den folgenden italienischen Text höflich und professionell ins Deutsche.";
+  } else if (action === "en-de") {
+    systemPrompt = "Übersetze den folgenden englischen Text höflich und professionell ins Deutsche.";
+  } else {
+    systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.
+Die folgende Eingabe stammt vom Support-Agenten. Formuliere sie so um, dass sie dem Mitglied von Ricardo klar, professionell und freundlich mitgeteilt wird.
+Wenn die Eingabe beispielsweise lautet: "Das Konto ist freigeschaltet", dann soll die Antwort dem Mitglied mitteilen, dass sein Konto erfolgreich freigeschaltet wurde – nicht, dass der Agent es nur wiederholt.
+Denke mit und strukturiere den Text so, dass er als fertige Nachricht versendet werden kann.
 
-Du kannst als Unterstützung den Inhalt von der Online-Hilfe von Ricardo unter https://help.ricardo.ch verwenden. 
-
-Beginne mit:
+Verwende als Einstieg:
 
 Grüezi {{ticket.requester.name}}
 
@@ -47,7 +47,7 @@ Abschliessend:
 Bei weiteren Fragen stehen wir Ihnen gerne zur Verfügung.
 
 Freundliche Grüsse`;
-}
+  }
 
   try {
     const chatCompletion = await openai.chat.completions.create({
@@ -58,8 +58,8 @@ Freundliche Grüsse`;
       ],
     });
 
-const output = chatCompletion.choices[0].message.content;
-res.json({ text: output });
+    const output = chatCompletion.choices[0].message.content;
+    res.json({ text: output });
   } catch (error) {
     res.status(500).json({ error: "Fehler bei GPT", details: error.message });
   }
