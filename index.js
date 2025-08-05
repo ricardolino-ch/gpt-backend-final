@@ -34,7 +34,7 @@ app.post("/gpt", async (req, res) => {
     systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.
 Die folgende Eingabe stammt vom Support-Agenten. Formuliere sie so um, dass sie dem Mitglied von Ricardo klar, professionell und freundlich mitgeteilt wird.
 Wenn die Eingabe beispielsweise lautet: "Das Konto ist freigeschaltet", dann soll die Antwort dem Mitglied mitteilen, dass sein Konto erfolgreich freigeschaltet wurde – nicht, dass der Agent es nur wiederholt.
-Denke mit und strukturiere den Text so, dass er als fertige Nachricht versendet werden kann.
+Denke mit und strukturiere den Text so, dass er als fertige Nachricht versendet werden kann. Bitte ändere nicht den Inhalt, verbessere diesen nur! 
 
 Verwende als Einstieg:
 
