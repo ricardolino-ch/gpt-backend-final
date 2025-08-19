@@ -53,11 +53,13 @@ Freundliche Grüsse`;
 
   try {
     const chatCompletion = await openai.chat.completions.create({
-      model: "gpt-5-mini",
+      model: "gpt-4o",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: text }
       ],
+	max_tokens: 400,
+	temperature: 0.2
     });
 
     const output = chatCompletion.choices[0].message.content;
