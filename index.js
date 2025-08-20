@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.post("/gpt", async (req, res) => {
-  const { text, action } = req.body;
+  const { text, action, subdomain } = req.body; // <-- subdomain hinzugefügt
 
   let systemPrompt = "";
 
@@ -31,14 +31,19 @@ app.post("/gpt", async (req, res) => {
   } else if (action === "en-de") {
     systemPrompt = "Übersetze den folgenden englischen Text höflich und professionell ins Deutsche.";
   } else {
+    let greeting = "Grüezi";
+    if (subdomain?.toLowerCase() === "tutti") {
+      greeting = "Guten Tag";
+    }
+
     systemPrompt = `Du bist ein professioneller Co-Pilot im Kundenservice.
-Die folgende Eingabe stammt vom Support-Agenten. Formuliere sie so um, dass sie dem Mitglied von Ricardo klar, professionell und freundlich mitgeteilt wird.
+Die folgende Eingabe stammt vom Support-Agenten. Formuliere sie so um, dass sie dem Mitglied klar, professionell und freundlich mitgeteilt wird.
 Wenn die Eingabe beispielsweise lautet: "Das Konto ist freigeschaltet", dann soll die Antwort dem Mitglied mitteilen, dass sein Konto erfolgreich freigeschaltet wurde – nicht, dass der Agent es nur wiederholt.
 Denke mit und strukturiere den Text so, dass er als fertige Nachricht versendet werden kann. Bitte ändere nicht den Inhalt, verbessere diesen nur! 
 
 Verwende als Einstieg:
 
-Grüezi {{ticket.requester.name}}
+${greeting} {{ticket.requester.name}}
 
 Vielen Dank für Ihre Anfrage.
 
@@ -58,8 +63,8 @@ Freundliche Grüsse`;
         { role: "system", content: systemPrompt },
         { role: "user", content: text }
       ],
-	max_tokens: 400,
-	temperature: 0.2
+      max_tokens: 400,
+      temperature: 0.2
     });
 
     const output = chatCompletion.choices[0].message.content;
