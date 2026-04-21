@@ -58,7 +58,7 @@ Freundliche Grüsse`;
 
   try {
     const chatCompletion = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-5",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: text }
